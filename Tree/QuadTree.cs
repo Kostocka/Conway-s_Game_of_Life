@@ -83,6 +83,78 @@ class QuadTree
         }
     }
 
+    public void Step()
+    {
+        var candidates = new HashSet<(long x, long y)>();
+        var currentAlive = new HashSet<(long x, long y)>();
+
+        CollectAliveCells(root, originX, originY, 1L << root.Level, currentAlive);
+
+        foreach (var (x, y) in currentAlive)
+        {
+            for (long dx = -1; dx <= 1; dx++)
+                for (long dy = -1; dy <= 1; dy++)
+                    candidates.Add((x + dx, y + dy));
+        }
+
+        var nextTree = new QuadTree(root.Level);
+
+        foreach (var (x, y) in candidates)
+        {
+            int count = CountAliveNeighbors(x, y);
+            bool isAlive = GetCellAlive(x, y);
+            if (isAlive && (count == 2 || count == 3))
+            {
+                nextTree.SetAlive(x, y);
+            }
+            else if (!isAlive && count == 3)
+            {
+                nextTree.SetAlive(x, y);
+            }
+        }
+
+        this.root = nextTree.root;
+        this.originX = nextTree.originX;
+        this.originY = nextTree.originY;
+
+    }
+
+    private int CountAliveNeighbors(long x, long y)
+    {
+        int count = 0;
+        for (long dx = -1; dx <= 1; dx++)
+        {
+            for (long dy = -1; dy <= 1; dy++)
+            {
+                if (dx == 0 && dy == 0) continue;
+                if (GetCellAlive(x + dx, y + dy))
+                    count++;
+            }
+        }
+
+        return count;
+    }
+
+    private void CollectAliveCells(QuadTreeNode node, long x0, long y0, long size, HashSet<(long, long)> result)
+    {
+        if (node == null)
+            return;
+
+        if (node.Level == 0)
+        {
+            if (node.Alive)
+                result.Add((x0, y0));
+            return;
+        }
+
+        long half = size / 2;
+
+        CollectAliveCells(node.NW, x0, y0, half, result);
+        CollectAliveCells(node.NE, x0 + half, y0, half, result);
+        CollectAliveCells(node.SW, x0, y0 + half, half, result);
+        CollectAliveCells(node.SE, x0 + half, y0 + half, half, result);
+    }
+
 
     private QuadTreeNode? TryGetLeaf(QuadTreeNode node, long x0, long y0, long size, long x, long y)
     {
