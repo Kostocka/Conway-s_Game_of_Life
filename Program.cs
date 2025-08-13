@@ -1,26 +1,40 @@
 ﻿using System;
-using Tree;
+using System.Threading;
+// using Life;
+using Treee;
+using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.ReactiveUI;
 
 class Program
 {
-    static void Main()
-    {
-        var tree = new QuadTree(4);
-        tree.SetAlive(0, 0);
-        tree.SetAlive(1, 0);
-        tree.SetAlive(2, 0);
+    public static AppBuilder BuildAvaloniaApp()
+            => AppBuilder.Configure<App>()
+                         .UsePlatformDetect()
+                         .LogToTrace()
+                         .UseReactiveUI();
+    
+    
+    static void Main(string[] args)
+{
 
-        while (true)
-        {
-            Console.Clear();
-            tree.PrintToConsole(10, 10);
-            tree.Step();
-            Thread.Sleep(500);
-        }
+    BuildAvaloniaApp()
+           .StartWithClassicDesktopLifetime(args);
 
-    }
+    // var sim = new QuadTree(4);
+
+    // sim.SetAlive(0, 0);
+    // sim.SetAlive(0, 1);
+    // sim.SetAlive(1, 0);
+    // sim.SetAlive(-1, 0);
+    // sim.SetAlive(0, -1); 
+
+    // while (true)
+    // {
+    //     Console.Clear();
+    //     sim.PrintToConsole(20, 20);
+    //     sim.Step();
+    //     Thread.Sleep(100);
+    // }
 }
-
-
-// y вниз 
-// х вправо
+}

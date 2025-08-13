@@ -1,4 +1,4 @@
-namespace Tree;
+namespace Treee;
 
 class QuadTree
 {
@@ -6,6 +6,7 @@ class QuadTree
     
     private long originX = 0;
     private long originY = 0;
+    
     public QuadTree(int maxLevel)
     {
         root = new QuadTreeNode(maxLevel);
@@ -71,6 +72,7 @@ class QuadTree
     {
         long x0 = -width / 2;
         long y0 = -height / 2;
+
 
         for (long y = y0; y < y0 + height; y++)
         {
@@ -217,7 +219,7 @@ class QuadTree
             node.SE.IsLeaf && !node.SE.Alive;
     }
 
-    private bool GetCellAlive(long x, long y)
+    public bool GetCellAlive(long x, long y)
     {
         long size = 1L << root.Level;
 
