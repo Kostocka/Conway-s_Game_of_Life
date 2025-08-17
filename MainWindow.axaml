@@ -9,10 +9,11 @@
 
     <Border DockPanel.Dock="Bottom" Background="#DD333333" CornerRadius="10" Margin="10" Padding="5" HorizontalAlignment="Center">
       <StackPanel Orientation="Horizontal" Spacing="10">
-        <Button Name="StepButton" Content="Шаг" Width="80"/>
-        <Button Name="PauseButton" Content="Пауза" Width="80"/>
-        <Button Name="PlayButton" Content="Старт" Width="80"/>
-        <Button Name="RestartButton" Content="Рестарт" Width="80"/>
+        <Button Name="StepButton" Content="Step" Width="80"/>
+        <Button Name="PauseButton" Content="Pause" Width="80"/>
+        <Button Name="PlayButton" Content="Start" Width="80"/>
+        <Button Name="RestartButton" Content="Restart" Width="80"/>
+        <Button Name="ClearButton" Content="Clear" Width="80"/>
       </StackPanel>
     </Border>
 

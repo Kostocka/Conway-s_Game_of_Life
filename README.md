@@ -26,6 +26,7 @@ This project is a **Conway’s Game of Life** implementation with a **QuadTree b
 - **Pause** – stop the simulation
   - Red while running
 - **Restart** – reset to the initial state (generation 0) defined before the first run
+- **Clear** - clearing the field and the initial field
 
 ## Getting Started
 - [.NET 8.0 SDK](https://dotnet.microsoft.com/en-us/download) or higher

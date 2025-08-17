@@ -49,6 +49,7 @@ public partial class MainWindow : Window
                 DrawTree();
             }
         };
+        ClearButton.Click += (_, __) => { timer.Stop(); ClearTree(); DrawTree(); UpdateButtons(); };
         GameCanvas.PointerWheelChanged += OnPointerWheelChanged;
         GameCanvas.PointerMoved += OnPointerMoved;
         GameCanvas.PointerReleased += OnPointerReleased;
@@ -210,7 +211,7 @@ public partial class MainWindow : Window
 
         DrawTree();
     }
-    
+
     private void UpdateButtons()
     {
         if (timer.IsEnabled)
@@ -223,6 +224,12 @@ public partial class MainWindow : Window
             PlayButton.Background = Brushes.Green;
             PauseButton.Background = Brushes.Gray;
         }
+    }
+
+    public void ClearTree()
+    {
+        initialTree = null;
+        tree = new QuadTree(4); 
     }
 
 
