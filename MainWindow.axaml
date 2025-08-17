@@ -12,6 +12,7 @@
         <Button Name="StepButton" Content="Шаг" Width="80"/>
         <Button Name="PauseButton" Content="Пауза" Width="80"/>
         <Button Name="PlayButton" Content="Старт" Width="80"/>
+        <Button Name="RestartButton" Content="Рестарт" Width="80"/>
       </StackPanel>
     </Border>
 

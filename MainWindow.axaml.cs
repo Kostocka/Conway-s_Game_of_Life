@@ -15,6 +15,9 @@ namespace Treee;
 public partial class MainWindow : Window
 {
     private QuadTree tree = new QuadTree(4);
+
+    private QuadTree initialTree;
+
     private DispatcherTimer timer;
 
     private double zoom = 1.0;
@@ -29,57 +32,40 @@ public partial class MainWindow : Window
         InitializeComponent();
 
         StepButton.Click += (_, __) => { tree.Step(); DrawTree(); };
-        PauseButton.Click += (_, __) => timer.Stop();
-        PlayButton.Click += (_, __) => timer.Start();
+        PauseButton.Click += (_, __) => { timer.Stop(); UpdateButtons(); };
+        PlayButton.Click += (_, __) =>
+        {
+            initialTree = tree.Clone();
+            timer.Start();
+            UpdateButtons();
+        };
+        RestartButton.Click += (_, __) =>
+        {
+            if (initialTree != null)
+            {
+                tree = initialTree.Clone();
+                timer.Stop();
+                UpdateButtons();
+                DrawTree();
+            }
+        };
         GameCanvas.PointerWheelChanged += OnPointerWheelChanged;
         GameCanvas.PointerMoved += OnPointerMoved;
         GameCanvas.PointerReleased += OnPointerReleased;
 
-
-
-        tree.SetAlive(0, 0);
-        tree.SetAlive(0, 1);
-        tree.SetAlive(1, 0);
-        tree.SetAlive(-1, 0);
-        tree.SetAlive(0, -1);
-
         timer = new DispatcherTimer();
         timer.Interval = TimeSpan.FromMilliseconds(500);
-        timer.Tick += (_, __) => { tree.Step(); DrawTree(); };
-        timer.Start();
+        timer.Tick += (_, __) =>
+        {
+            if (!tree.Step())
+            {
+                timer.Stop();
+                UpdateButtons();
+            }
+            DrawTree();
+        };
 
         GameCanvas.PointerPressed += OnPointerPressed;
-    }
-
-    private void DrawGrid()
-    {
-        long width = 80;
-        long height = 60;
-
-        for (long i = 0; i <= width; i++)
-        {
-            var line = new Line
-            {
-                StartPoint = new Point(i * 10, 0),
-                EndPoint = new Point(i * 10, height * 10),
-                Stroke = Brushes.Gray,
-                StrokeThickness = 0.5
-            };
-            GameCanvas.Children.Add(line);
-        }
-
-
-        for (long j = 0; j <= height; j++)
-        {
-            var line = new Line
-            {
-                StartPoint = new Point(0, j * 10),
-                EndPoint = new Point(width * 10, j * 10),
-                Stroke = Brushes.Gray,
-                StrokeThickness = 0.5
-            };
-            GameCanvas.Children.Add(line);
-        }
     }
 
     private void DrawTree()
@@ -139,7 +125,7 @@ public partial class MainWindow : Window
             }
         }
     }
-    
+
     private void OnPointerPressed(object sender, PointerPressedEventArgs e)
     {
         var point = e.GetPosition(GameCanvas);
@@ -160,28 +146,28 @@ public partial class MainWindow : Window
     private void OnPointerMoved(object sender, PointerEventArgs e)
     {
         var point = e.GetPosition(GameCanvas);
-            int cellSize = 10;
+        int cellSize = 10;
 
         if (isDragging)
+        {
+            double dx = (point.X - lastDragPoint.X) / (cellSize * zoom);
+            double dy = (point.Y - lastDragPoint.Y) / (cellSize * zoom);
+
+            offsetX -= dx;
+            offsetY -= dy;
+
+            lastDragPoint = point;
+            DrawTree();
+        }
+        else if (!e.KeyModifiers.HasFlag(KeyModifiers.Control))
+        {
+            var props = e.GetCurrentPoint(GameCanvas).Properties;
+
+            if (props.IsLeftButtonPressed || props.IsRightButtonPressed)
             {
-                double dx = (point.X - lastDragPoint.X) / (cellSize * zoom);
-                double dy = (point.Y - lastDragPoint.Y) / (cellSize * zoom);
-
-                offsetX -= dx;
-                offsetY -= dy;
-
-                lastDragPoint = point;
-                DrawTree();
+                SetCellAtPoint(point, e);
             }
-            else if (!e.KeyModifiers.HasFlag(KeyModifiers.Control))
-            {
-                var props = e.GetCurrentPoint(GameCanvas).Properties;
-
-                if (props.IsLeftButtonPressed || props.IsRightButtonPressed)
-                {
-                    SetCellAtPoint(point, e);
-                }
-            }
+        }
     }
 
     private void SetCellAtPoint(Point point, PointerEventArgs e)
@@ -224,6 +210,21 @@ public partial class MainWindow : Window
 
         DrawTree();
     }
+    
+    private void UpdateButtons()
+    {
+        if (timer.IsEnabled)
+        {
+            PlayButton.Background = Brushes.Gray;
+            PauseButton.Background = Brushes.Red;
+        }
+        else
+        {
+            PlayButton.Background = Brushes.Green;
+            PauseButton.Background = Brushes.Gray;
+        }
+    }
+
 
 }
 

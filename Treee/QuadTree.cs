@@ -3,10 +3,10 @@ namespace Treee;
 class QuadTree
 {
     public QuadTreeNode root;
-    
+
     private long originX = 0;
     private long originY = 0;
-    
+
     public QuadTree(int maxLevel)
     {
         root = new QuadTreeNode(maxLevel);
@@ -61,7 +61,7 @@ class QuadTree
             }
         }
     }
-    
+
     public void UnsetAlive(long x, long y)
     {
         QuadTreeNode temp = GetNode(root, originX, originY, 1L << root.Level, x, y);
@@ -85,12 +85,15 @@ class QuadTree
         }
     }
 
-    public void Step()
+    public bool Step()
     {
         var candidates = new HashSet<(long x, long y)>();
         var currentAlive = new HashSet<(long x, long y)>();
 
         CollectAliveCells(root, originX, originY, 1L << root.Level, currentAlive);
+
+        if (currentAlive.Count == 0)
+            return false;
 
         foreach (var (x, y) in currentAlive)
         {
@@ -98,6 +101,7 @@ class QuadTree
                 for (long dy = -1; dy <= 1; dy++)
                     candidates.Add((x + dx, y + dy));
         }
+
 
         var nextTree = new QuadTree(root.Level);
 
@@ -119,6 +123,7 @@ class QuadTree
         this.originX = nextTree.originX;
         this.originY = nextTree.originY;
 
+        return true;
     }
 
     private int CountAliveNeighbors(long x, long y)
@@ -318,5 +323,16 @@ class QuadTree
             }
         }
     }
+    
+    public QuadTree Clone()
+    {
+        var copy = new QuadTree(this.root.Level);
+        var alive = new HashSet<(long x, long y)>();
+        CollectAliveCells(this.root, this.originX, this.originY, 1L << this.root.Level, alive);
+        foreach (var (x, y) in alive)
+            copy.SetAlive(x, y);
+        return copy;
+    }
+
 
 }
