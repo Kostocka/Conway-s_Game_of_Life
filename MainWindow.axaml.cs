@@ -31,6 +31,8 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
 
+        Opened += (_, __) => DrawTree();
+
         StepButton.Click += (_, __) => { tree.Step(); DrawTree(); };
         PauseButton.Click += (_, __) => { timer.Stop(); UpdateButtons(); };
         PlayButton.Click += (_, __) =>
@@ -49,6 +51,16 @@ public partial class MainWindow : Window
                 DrawTree();
             }
         };
+
+        SpeedSlider.PropertyChanged += (_, e) =>
+        {
+            if (e.Property == Slider.ValueProperty)
+            {
+                var ms = (int)SpeedSlider.Value;
+                timer.Interval = TimeSpan.FromMilliseconds(ms);
+            }
+        };
+
         ClearButton.Click += (_, __) => { timer.Stop(); ClearTree(); DrawTree(); UpdateButtons(); };
         GameCanvas.PointerWheelChanged += OnPointerWheelChanged;
         GameCanvas.PointerMoved += OnPointerMoved;
@@ -65,8 +77,8 @@ public partial class MainWindow : Window
             }
             DrawTree();
         };
-
         GameCanvas.PointerPressed += OnPointerPressed;
+        UpdateButtons();
     }
 
     private void DrawTree()

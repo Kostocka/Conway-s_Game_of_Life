@@ -14,6 +14,7 @@
         <Button Name="PlayButton" Content="Start" Width="80"/>
         <Button Name="RestartButton" Content="Restart" Width="80"/>
         <Button Name="ClearButton" Content="Clear" Width="80"/>
+        <Slider Name="SpeedSlider" Minimum="50" Maximum="3000" Value="500" Width="100" TickFrequency="50" IsSnapToTickEnabled="True"/>
       </StackPanel>
     </Border>
 
