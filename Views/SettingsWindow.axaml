@@ -1,0 +1,19 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Treee.SettingsWindow"
+        Width="400" Height="300"
+        Title="Settings"
+        CanResize="False"
+        WindowStartupLocation="CenterOwner">
+
+    <StackPanel Margin="20" Spacing="10">
+        <TextBlock Text="Настройки игры" FontSize="16" HorizontalAlignment="Center"/>
+
+        <TextBlock Text="Скорость (мс)" />
+        <Slider Minimum="50" Maximum="3000" Value="500" TickFrequency="50" Width="200" />
+
+        <CheckBox Content="Включить сетку" />
+
+        <Button Content="OK" HorizontalAlignment="Right" Width="80" Margin="0,10,0,0"/>
+    </StackPanel>
+</Window>

@@ -37,7 +37,8 @@ public partial class MainWindow : Window
         PauseButton.Click += (_, __) => { timer.Stop(); UpdateButtons(); };
         PlayButton.Click += (_, __) =>
         {
-            initialTree = tree.Clone();
+            if (initialTree == null)
+                initialTree = tree.Clone();
             timer.Start();
             UpdateButtons();
         };
@@ -62,6 +63,21 @@ public partial class MainWindow : Window
         };
 
         ClearButton.Click += (_, __) => { timer.Stop(); ClearTree(); DrawTree(); UpdateButtons(); };
+        SettingsButton.Click += async (_, __) =>
+        {
+            timer.Stop();
+
+            var settingsWindow = new SettingsWindow
+            {
+                WindowStartupLocation = WindowStartupLocation.CenterOwner
+            };
+
+            await settingsWindow.ShowDialog(this);
+
+            UpdateButtons();
+        };
+
+
         GameCanvas.PointerWheelChanged += OnPointerWheelChanged;
         GameCanvas.PointerMoved += OnPointerMoved;
         GameCanvas.PointerReleased += OnPointerReleased;
