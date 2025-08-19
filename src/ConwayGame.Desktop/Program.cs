@@ -1,5 +1,9 @@
-﻿using Avalonia;
-using System;
+﻿using System;
+using System.Threading;
+using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
+// using Avalonia.ReactiveUI;
+
 
 namespace ConwayGame.Desktop;
 
@@ -16,6 +20,5 @@ class Program
     public static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
-            .WithInterFont()
             .LogToTrace();
 }
