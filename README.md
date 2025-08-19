@@ -27,6 +27,7 @@ This project is a **Conway’s Game of Life** implementation with a **QuadTree b
   - Red while running
 - **Restart** – reset to the initial state (generation 0) defined before the first run
 - **Clear** - clearing the field and the initial field
+- **Settings** - you can change colors and slider borders
 
 ## Getting Started
 - [.NET 8.0 SDK](https://dotnet.microsoft.com/en-us/download) or higher
@@ -35,8 +36,16 @@ This project is a **Conway’s Game of Life** implementation with a **QuadTree b
   - Avalonia.Desktop (11.3.3)
   - Avalonia.ReactiveUI (11.3.3)
   - Avalonia.Themes.Fluent (11.3.3)
+    - dotnet add package Avalonia.Controls.ColorPicker --version 11.3.3
+
 
 ### Build & Run
+
+In the project root, there is an executable file for MacOS
+You can run it with a normal double click
+
+OR
+
 ```bash
 git clone https://github.com/Kostocka/Conway-s_Game_of_Life
 cd Conway-s_Game_of_Life

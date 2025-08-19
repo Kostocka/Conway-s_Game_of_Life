@@ -9,6 +9,8 @@ using Avalonia.Interactivity;
 using System.Threading.Tasks;
 using Avalonia;
 using System.Linq;
+using System.Text.Json;
+
 
 namespace Treee;
 
@@ -27,9 +29,15 @@ public partial class MainWindow : Window
     private bool isDragging = false;
     private Point lastDragPoint;
 
+    private AppSettings settings;
+    private const string SettingsFile = "settings.json";
+
     public MainWindow()
     {
         InitializeComponent();
+
+        settings = LoadSettings();
+        ApplySettings();
 
         Opened += (_, __) => DrawTree();
 
@@ -66,14 +74,14 @@ public partial class MainWindow : Window
         SettingsButton.Click += async (_, __) =>
         {
             timer.Stop();
-
-            var settingsWindow = new SettingsWindow
+            var win = new SettingsWindow(settings);
+            var result = await win.ShowDialog<AppSettings?>(this);
+            if (result != null)
             {
-                WindowStartupLocation = WindowStartupLocation.CenterOwner
-            };
-
-            await settingsWindow.ShowDialog(this);
-
+                settings = result;
+                ApplySettings();
+                SaveSettings();
+            }
             UpdateButtons();
         };
 
@@ -96,6 +104,8 @@ public partial class MainWindow : Window
         GameCanvas.PointerPressed += OnPointerPressed;
         UpdateButtons();
     }
+
+
 
     private void DrawTree()
     {
@@ -145,7 +155,7 @@ public partial class MainWindow : Window
                     {
                         Width = cellSize * zoom,
                         Height = cellSize * zoom,
-                        Fill = Brushes.Green
+                        Fill = new SolidColorBrush(Color.Parse(settings.CellColor))
                     };
                     Canvas.SetLeft(rect, (x - offsetX) * cellSize * zoom + canvasWidth / 2);
                     Canvas.SetTop(rect, (y - offsetY) * cellSize * zoom + canvasHeight / 2);
@@ -257,8 +267,32 @@ public partial class MainWindow : Window
     public void ClearTree()
     {
         initialTree = null;
-        tree = new QuadTree(4); 
+        tree = new QuadTree(4);
     }
+    
+    private AppSettings LoadSettings()
+    {
+        if (File.Exists(SettingsFile))
+        {
+            var json = File.ReadAllText(SettingsFile);
+            return JsonSerializer.Deserialize<AppSettings>(json) ?? new AppSettings();
+        }
+        return new AppSettings();
+    }
+
+    private void SaveSettings()
+    {
+        var json = JsonSerializer.Serialize(settings, new JsonSerializerOptions { WriteIndented = true });
+        File.WriteAllText(SettingsFile, json);
+    }
+
+    private void ApplySettings()
+    {
+        GameCanvas.Background = new SolidColorBrush(Color.Parse(settings.FieldColor));
+        SpeedSlider.Minimum = settings.MinSpeed;
+        SpeedSlider.Maximum = settings.MaxSpeed;
+    }
+
 
 
 }
