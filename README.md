@@ -49,4 +49,4 @@ OR
 ```bash
 git clone https://github.com/Kostocka/Conway-s_Game_of_Life
 cd Conway-s_Game_of_Life
-dotnet run
+dotnet run --project ./src/ConwayGame.Core
