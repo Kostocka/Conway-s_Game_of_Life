@@ -27,7 +27,7 @@ for rid in "${RUNTIMES[@]}"; do
 
   if [[ "$rid" == "win-x64" ]]; then
     mkdir -p "$DIST_DIR/Windows"
-    cp "$TMP_DIR/ConwayGame.Desktop.exe" "$DIST_DIR/Windows/"
+    cp "$TMP_DIR/ConwayGame.Desktop.exe" "$DIST_DIR/Windows/ConwayGame.exe"
   
   elif [[ "$rid" == "osx-arm64" ]]; then
     APP_NAME="ConwayGame.app"
