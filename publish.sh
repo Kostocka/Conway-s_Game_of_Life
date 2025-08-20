@@ -10,6 +10,7 @@ mkdir -p "$DIST_DIR"
 RUNTIMES=("win-x64" "osx-arm64")
 
 for rid in "${RUNTIMES[@]}"; do
+  echo "==============="
   echo "=== Publishing for $rid ==="
   
   TMP_DIR="$SCRIPT_DIR/tmp/$rid"
@@ -25,14 +26,13 @@ for rid in "${RUNTIMES[@]}"; do
     -o "$TMP_DIR"
 
   if [[ "$rid" == "win-x64" ]]; then
-    mkdir -p "$DIST_DIR/win-x64"
-    cp "$TMP_DIR/ConwayGame.Desktop.exe" "$DIST_DIR/win-x64/"
+    mkdir -p "$DIST_DIR/Windows"
+    cp "$TMP_DIR/ConwayGame.Desktop.exe" "$DIST_DIR/Windows/"
   
   elif [[ "$rid" == "osx-arm64" ]]; then
     APP_NAME="ConwayGame.app"
-    APP_DIR="$DIST_DIR/osx-arm64/$APP_NAME"
+    APP_DIR="$DIST_DIR/MacOS Silicon/$APP_NAME"
     
-    # Создаём структуру .app
     mkdir -p "$APP_DIR/Contents/MacOS"
     mkdir -p "$APP_DIR/Contents/Resources"
 
@@ -64,4 +64,6 @@ EOF
   fi
 done
 
+echo "==============="
+echo "==============="
 echo "✅ Все сборки готовы в папке $DIST_DIR"
