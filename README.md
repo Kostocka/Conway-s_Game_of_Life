@@ -8,7 +8,7 @@ This implementation uses a **QuadTree backend** for an infinite grid and provide
 
 ## 🔹 What is this game about?
 
- The Game of Life is played on an ** infinite two-dimensional grid ** consisting of square cells. Each cell can be either ** alive ** or ** dead **. The game progresses in distinct stages called ** generations **. At each generation, the state of each cell is updated simultaneously based on the data of its neighbors, following a set of rules. 
+ The Game of Life is played on an **infinite two-dimensional grid** consisting of square cells. Each cell can be either **alive** or **dead**. The game progresses in distinct stages called **generations**. At each generation, the state of each cell is updated simultaneously based on the data of its neighbors, following a set of rules. 
 
 Although the rules are simple, the game can exhibit "non-standard behavior" by creating stable structures, oscillators, and patterns that move across the grid ("spaceships"). This is what makes it interesting.
 
@@ -18,10 +18,10 @@ Although the rules are simple, the game can exhibit "non-standard behavior" by c
 
 For each grid cell:
 
-1. ** Underpopulation: ** Any live cell with fewer than two live neighbors dies. 
-2. ** Survival:** Any living cell with two or three living neighbors survives. 
-3. ** Overpopulation: ** Any living cell with more than three living neighbors dies. 
-4. ** Reproduction: ** Any dead cell that has exactly three living neighbors comes back to life.
+1. **Underpopulation:** Any live cell with fewer than two live neighbors dies. 
+2. **Survival:** Any living cell with two or three living neighbors survives. 
+3. **Overpopulation:** Any living cell with more than three living neighbors dies. 
+4. **Reproduction:** Any dead cell that has exactly three living neighbors comes back to life.
 
 ## 🔹 Game Features
 - Infinite grid representation using a **QuadTree**
