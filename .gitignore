@@ -57,3 +57,4 @@ Life
 publish/
 .DS_Store
 .fake
+tmp
